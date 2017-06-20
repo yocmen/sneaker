@@ -4,7 +4,6 @@ namespace Yocmen\Sneaker;
 
 use Exception;
 use Illuminate\Log\Writer;
-use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Config\Repository;
 
 class Sneaker
@@ -19,14 +18,14 @@ class Sneaker
     /**
      * The exception handler implementation.
      *
-     * @var \SquareBoat\Sneaker\ExceptionHandler
+     * @var \Yocmen\Sneaker\ExceptionHandler
      */
     private $handler;
 
     /**
-     * The mailer instance.
+     * The css inline mailer implementation.
      *
-     * @var \Illuminate\Contracts\Mail\Mailer
+     * @var \Yocmen\Sneaker\CssInlineMailer
      */
     private $mailer;
 
@@ -41,14 +40,14 @@ class Sneaker
      * Create a new sneaker instance.
      *
      * @param  \Illuminate\Config\Repository $config
-     * @param  \SquareBoat\Sneaker\ExceptionHandler $handler
-     * @param  \Illuminate\Contracts\Mail\Mailer $mailer
+     * @param  \Yocmen\Sneaker\ExceptionHandler $handler
+     * @param  \Yocmen\Sneaker\CssInlineMailer $mailer
      * @param  \Illuminate\Log\Writer $logger
      * @return void
      */
     public function __construct(Repository $config,
                                 ExceptionHandler $handler,
-                                Mailer $mailer,
+                                CssInlineMailer $mailer,
                                 Writer $logger)
     {
         $this->config = $config;
@@ -66,7 +65,7 @@ class Sneaker
      * @param  \Exception $exception
      * @return void
      */
-    public function captureException(Exception $exception, $sneaking = false)
+    public function captureException(Exception $exception)
     {
         try {
             if ($this->isSilent()) {
@@ -87,10 +86,6 @@ class Sneaker
             ));
 
             $this->logger->error($e);
-
-            if ($sneaking) {
-                throw $e;
-            }
         }
     }
 
@@ -108,7 +103,9 @@ class Sneaker
 
         $body = $this->handler->convertExceptionToHtml($exception);
 
-        $this->mailer->to($recipients)->send(new ExceptionMailer($subject, $body));
+        $this->mailer->send($body, function($message) use($recipients, $subject) {
+            $message->to($recipients)->subject($subject);
+        });
     }
 
     /**
@@ -158,8 +155,8 @@ class Sneaker
         $ignored_bots = $this->config->get('sneaker.ignored_bots');
 
         $agent = array_key_exists('HTTP_USER_AGENT', $_SERVER)
-            ? strtolower($_SERVER['HTTP_USER_AGENT'])
-            : null;
+                    ? strtolower($_SERVER['HTTP_USER_AGENT'])
+                    : null;
 
         if (is_null($agent)) {
             return false;
