@@ -103,10 +103,11 @@ class Sneaker
 
         $body = $this->handler->convertExceptionToHtml($exception);
 
-        dd($recipients);
-        $this->mailer->send($body, function($message) use($recipients, $subject) {
+        $check = $this->mailer->send($body, function($message) use($recipients, $subject) {
             $message->to($recipients)->subject($subject);
         });
+
+        dd($check);
     }
 
     /**
