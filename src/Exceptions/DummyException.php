@@ -1,5 +1,5 @@
 <?php
-namespace SquareBoat\Sneaker\Exceptions;
+namespace Yocmen\Sneaker\Exceptions;
 use Exception;
 class DummyException extends Exception
 {
