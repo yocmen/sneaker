@@ -1,5 +1,5 @@
 {
-    "name": "squareboat/sneaker",
+    "name": "yocmen/sneaker",
     "description": "An easy way to send emails with stack trace whenever an exception occurs on the server for Laravel Applications.",
     "type": "library",
     "license": "MIT",
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SquareBoat\\Sneaker\\": "src/"
+            "Yocmen\\Sneaker\\": "src/"
         }
     },
     "minimum-stability": "dev"
