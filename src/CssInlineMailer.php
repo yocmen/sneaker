@@ -49,7 +49,6 @@ class CssInlineMailer
 
         //$this->mailer->queue('sneaker::raw', compact('content'), $callback);
 
-        dd($content);
         Mail::raw(compact('content'), $callback);
     }
 
