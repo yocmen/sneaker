@@ -23,7 +23,7 @@ class SneakerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'sneaker');
 
         $this->publishes([
-            __DIR__ . '/../resources/views/email' => resource_path('views/vendor/sneaker/email')
+            __DIR__ . '/../resources/views/email' => base_path('resources/views/vendor/sneaker/email')
         ], 'views');
 
         $this->publishes([
