@@ -4,6 +4,7 @@ namespace Yocmen\Sneaker;
 
 use Exception;
 use Illuminate\Log\Writer;
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Config\Repository;
 
 class Sneaker
@@ -18,14 +19,14 @@ class Sneaker
     /**
      * The exception handler implementation.
      *
-     * @var \Yocmen\Sneaker\ExceptionHandler
+     * @var \SquareBoat\Sneaker\ExceptionHandler
      */
     private $handler;
 
     /**
-     * The css inline mailer implementation.
+     * The mailer instance.
      *
-     * @var \Yocmen\Sneaker\CssInlineMailer
+     * @var \Illuminate\Contracts\Mail\Mailer
      */
     private $mailer;
 
@@ -40,14 +41,14 @@ class Sneaker
      * Create a new sneaker instance.
      *
      * @param  \Illuminate\Config\Repository $config
-     * @param  \Yocmen\Sneaker\ExceptionHandler $handler
-     * @param  \Yocmen\Sneaker\CssInlineMailer $mailer
+     * @param  \SquareBoat\Sneaker\ExceptionHandler $handler
+     * @param  \Illuminate\Contracts\Mail\Mailer $mailer
      * @param  \Illuminate\Log\Writer $logger
      * @return void
      */
     public function __construct(Repository $config,
                                 ExceptionHandler $handler,
-                                CssInlineMailer $mailer,
+                                Mailer $mailer,
                                 Writer $logger)
     {
         $this->config = $config;
@@ -65,8 +66,8 @@ class Sneaker
      * @param  \Exception $exception
      * @return void
      */
-    public function captureException(Exception $exception)
-    {        
+    public function captureException(Exception $exception, $sneaking = false)
+    {
         try {
             if ($this->isSilent()) {
                 return;
@@ -86,12 +87,16 @@ class Sneaker
             ));
 
             $this->logger->error($e);
+
+            if ($sneaking) {
+                throw $e;
+            }
         }
     }
 
     /**
      * Capture an exception.
-     * 
+     *
      * @param  \Exception $exception
      * @return void
      */
@@ -103,14 +108,12 @@ class Sneaker
 
         $body = $this->handler->convertExceptionToHtml($exception);
 
-        $this->mailer->send($body, function($message) use($recipients, $subject) {
-            $message->to($recipients)->subject($subject);
-        });
+        $this->mailer->to($recipients)->send(new ExceptionMailer($subject, $body));
     }
 
     /**
      * Checks if sneaker is silent.
-     * 
+     *
      * @return boolean
      */
     private function isSilent()
@@ -120,7 +123,7 @@ class Sneaker
 
     /**
      * Determine if the exception is in the "capture" list.
-     * 
+     *
      * @param  Exception $exception
      * @return boolean
      */
@@ -147,7 +150,7 @@ class Sneaker
 
     /**
      * Determine if the exception is from the bot.
-     * 
+     *
      * @return boolean
      */
     private function isExceptionFromBot()
@@ -155,8 +158,8 @@ class Sneaker
         $ignored_bots = $this->config->get('sneaker.ignored_bots');
 
         $agent = array_key_exists('HTTP_USER_AGENT', $_SERVER)
-                    ? strtolower($_SERVER['HTTP_USER_AGENT'])
-                    : null;
+            ? strtolower($_SERVER['HTTP_USER_AGENT'])
+            : null;
 
         if (is_null($agent)) {
             return false;
