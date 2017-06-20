@@ -106,8 +106,6 @@ class Sneaker
         $this->mailer->send($body, function($message) use($recipients, $subject) {
             $message->to($recipients)->subject($subject);
         });
-
-        dd($this->mailer->ErrorInfo);
     }
 
     /**
