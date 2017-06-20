@@ -1,6 +1,6 @@
 <?php
 
-namespace SquareBoat\Sneaker;
+namespace Yocmen\Sneaker;
 
 use Illuminate\Mail\Mailer;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
@@ -34,7 +34,7 @@ class CssInlineMailer
 
         $this->converter = $converter;
     }
-
+    
     /**
      * Sends a new message.
      *

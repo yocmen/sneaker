@@ -1,6 +1,6 @@
 <?php
 
-namespace SquareBoat\Sneaker;
+namespace Yocmen\Sneaker;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace SquareBoat\Sneaker;
+namespace Yocmen\Sneaker;
 
 use Exception;
 use Illuminate\Log\Writer;
@@ -18,14 +18,14 @@ class Sneaker
     /**
      * The exception handler implementation.
      *
-     * @var \SquareBoat\Sneaker\ExceptionHandler
+     * @var \Yocmen\Sneaker\ExceptionHandler
      */
     private $handler;
 
     /**
      * The css inline mailer implementation.
      *
-     * @var \SquareBoat\Sneaker\CssInlineMailer
+     * @var \Yocmen\Sneaker\CssInlineMailer
      */
     private $mailer;
 
@@ -40,8 +40,8 @@ class Sneaker
      * Create a new sneaker instance.
      *
      * @param  \Illuminate\Config\Repository $config
-     * @param  \SquareBoat\Sneaker\ExceptionHandler $handler
-     * @param  \SquareBoat\Sneaker\CssInlineMailer $mailer
+     * @param  \Yocmen\Sneaker\ExceptionHandler $handler
+     * @param  \Yocmen\Sneaker\CssInlineMailer $mailer
      * @param  \Illuminate\Log\Writer $logger
      * @return void
      */

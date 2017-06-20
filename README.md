@@ -18,7 +18,7 @@ Once installation operation is complete, simply add the service provider to your
 
 #### Service Provider
 ```
-SquareBoat\Sneaker\SneakerServiceProvider::class,
+Yocmen\Sneaker\SneakerServiceProvider::class,
 ```
 
 
@@ -40,7 +40,7 @@ public function report(Exception $exception)
 Create the Sneaker configuration file  with this command:
 
 ```bash
-$ php artisan vendor:publish --provider="SquareBoat\Sneaker\SneakerServiceProvider"
+$ php artisan vendor:publish --provider="Yocmen\Sneaker\SneakerServiceProvider"
 ```
 
 The config file will be published in  `config/sneaker.php`
@@ -119,7 +119,7 @@ This is the list of bots for which we should NOT send error emails.
 If you need to customize the subject and body of email, run following command:
 
 ```bash
-$ php artisan vendor:publish --provider="SquareBoat\Sneaker\SneakerServiceProvider"
+$ php artisan vendor:publish --provider="Yocmen\Sneaker\SneakerServiceProvider"
 ```
 
 > Note - Don't run this command again if you have run it already.
