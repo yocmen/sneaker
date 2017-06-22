@@ -77,6 +77,7 @@ class Sneaker
             }
 
             if ($this->shouldCapture($exception)) {
+                dd($exception);
                 $this->capture($exception);
             }
         } catch (Exception $e) {
