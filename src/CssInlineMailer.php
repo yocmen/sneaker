@@ -2,7 +2,6 @@
 
 namespace Yocmen\Sneaker;
 
-use Mail;
 use Illuminate\Mail\Mailer;
 use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 
@@ -47,9 +46,7 @@ class CssInlineMailer
     {
         $content = $this->convertCssToInlineStyles($content);
 
-        $this->mailer->queue('sneaker::raw', compact('content'), $callback);
-
-        Mail::raw(compact('content'), $callback);
+        $this->mailer->send('sneaker::raw', compact('content'), $callback);
     }
 
     /**
