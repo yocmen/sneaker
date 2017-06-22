@@ -109,7 +109,7 @@ class Sneaker
             $message->to($recipients)->subject($subject);
         });
         */
-        Mail::send($body, function($message) use($recipients, $subject) {
+        Mail::send(['text' => $body], function($message) use($recipients, $subject) {
             $message->to($recipients)->subject($subject);
         });
     }
