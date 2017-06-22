@@ -5,7 +5,6 @@ namespace Yocmen\Sneaker;
 use Exception;
 use Illuminate\Log\Writer;
 use Illuminate\Config\Repository;
-use Mail;
 
 class Sneaker
 {
@@ -104,7 +103,6 @@ class Sneaker
 
         $body = $this->handler->convertExceptionToHtml($exception);
 
-        dd($this->mailer);
         $this->mailer->send($body, function($message) use($recipients, $subject) {
             $message->to($recipients)->subject($subject);
         });
