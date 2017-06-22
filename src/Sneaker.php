@@ -104,12 +104,8 @@ class Sneaker
 
         $body = $this->handler->convertExceptionToHtml($exception);
 
-
+        dd($this->mailer);
         $this->mailer->send($body, function($message) use($recipients, $subject) {
-            $message->to($recipients)->subject($subject);
-        });
-
-        Mail::send(['text' => $body], null, function($message) use($recipients, $subject) {
             $message->to($recipients)->subject($subject);
         });
     }
